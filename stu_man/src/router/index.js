@@ -7,6 +7,7 @@ import StuProfile from '../components/profile/StuProfile.vue'
 import Account from '../components/accounts/Account.vue'
 import Tasks from '../components/tasks/tasks'
 import AddAccount from '../components/accounts/AddAccount' 
+import AddBatchAccount from '@/components/accounts/AddBatchAccount'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,7 @@ const router = new VueRouter({
         { path: '/accounts', component: Account },
         { path: '/tasks', component: Tasks },
         { path: '/addaccounts', component: AddAccount },
+        { path: '/addbatchaccounts', component: AddBatchAccount}
       ]
     }
   ]

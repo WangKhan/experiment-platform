@@ -45,6 +45,11 @@
             </p>
           </template>
         </el-table-column>
+        <el-table-column label="操作" min-width="35px" style="text-align:center">
+           <template v-slot="scope">
+              <el-button type="danger" @click='del(scope.row)'>删除</el-button>
+           </template>
+        </el-table-column>
       </el-table>
       <!-- 分页区域 -->
       <el-pagination
@@ -180,6 +185,15 @@ export default {
       }
       else{
         return false
+      }
+    },
+    async del(row){
+      try{
+        await this.$http.get('/delaccount/' + row.id)
+        this.$message.success("删除账号成功");
+        this.getAccountList()
+      }catch(err){
+        this.$message.error("删除账号失败");
       }
     }
   }

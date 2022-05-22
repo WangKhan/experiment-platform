@@ -61,10 +61,12 @@ export default {
         try {
           const { data: res } = await this.$http.post('/login', this.loginForm)
           this.$message.success('登录成功！')
+          console.log(res.data)
           window.sessionStorage.setItem('token', res.data.token)
           // 将用户的identity和id存到localStorage，后面有用
           window.sessionStorage.setItem('identity', res.data.identity)
           window.sessionStorage.setItem('id', res.data.id)
+          window.sessionStorage.setItem('init',res.data.init)
           // 跳转到home主页
           await this.$router.push('/home')
         } catch (err) {

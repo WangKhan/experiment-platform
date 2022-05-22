@@ -21,7 +21,8 @@ export default {
     return {
       tasksStatus:[0,0,0,0,0,0],
       tasksName:['实验1 Python数字图像处理初步','实验2  图像的代数运算','实验3 几何变换','实验4 直方图','实验5 滤波处理','实验6 高级特性（形态学+图像分割+彩色图像处理）'],
-      taskUrl:["http://www.baidu.com","http://www.baidu.com","http://www.baidu.com","http://www.baidu.com","http://www.baidu.com","http://www.baidu.com"],
+      BaseUrl:'http://52.24.79.132/user/test/notebooks/task1.ipynb',
+      id:''
     }
   },
   components: {
@@ -33,7 +34,7 @@ export default {
         this.$set(this.tasksStatus,index,1)
         this.updateTaskStatus()
       }
-      window.open(this.taskUrl[index],"_blank");
+      window.open(`http://52.24.79.132/user/${this.id}/notebooks/task${index+1}.ipynb`,"_blank");
     },
     async getTaskStatus(){
        try {

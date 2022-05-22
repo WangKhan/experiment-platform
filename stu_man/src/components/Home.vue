@@ -44,7 +44,7 @@ export default {
       // 根据用户的identity渲染，0为管理员，1为学生
       menulist: [
         [
-          { id: 1, authName: '用户管理', children: [{ id: 11, authName: '进度监控', path: '/accounts' },{ id: 5, authName: '添加账号', path: '/addaccounts' }] }
+          { id: 1, authName: '用户管理', children: [{ id: 11, authName: '进度监控', path: '/accounts' },{ id: 31, authName: '添加账号', path: '/addaccounts' },{ id: 5, authName: '批量添加账号', path: '/addbatchaccounts' }] }
         ],
         [
           { id: 2, authName: '个人信息', children: [{ id: 21, authName: '查看', path: '/stuProfile' }] },
