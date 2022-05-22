@@ -1,7 +1,6 @@
 const express = require('express')
 const userList = require('../dao/accounts_dao')
 const auth = require('../middleware/auth')
-
 const router = express.Router()
 
 // 用户登录请求
@@ -26,6 +25,14 @@ router.get('/accounts', auth, function (req, res, next) {
 router.post('/accounts', auth, function (req, res, next) {
   try {
     userList.addAccount(req,res)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/batchaccounts', auth, function (req, res, next) {
+  try{
+    userList.addBatchAccount(req,res)
   } catch (err) {
     next(err)
   }
@@ -56,5 +63,22 @@ router.post('/accounts/grade', auth, function (req, res, next) {
     next(err)
   }
 })
+
+router.get('/delaccount/:id', auth, function (req, res, next) {
+  try {
+    userList.delAccount(req,res)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/accounts/init/:id', auth ,function (req, res, next) {
+  try {
+    userList.initAccount(req,res)
+  } catch(err) {
+    next(err)
+  }
+})
+
 
 module.exports = router

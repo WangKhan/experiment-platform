@@ -1,12 +1,12 @@
 
-module.exports = class accounts_mod extends require('./model'){
+module.exports = class accounts_mod extends require('./model') {
 
   // 用户登录
-  static loginUser(id,password,identity){
+  static loginUser(id, password, identity) {
     return new Promise((resolve, reject) => {
       let sql = "select * " +
-                "from user " +
-                "where binary id='"+id+"' and password='"+password+"' and identity='"+identity+"'"
+        "from user " +
+        "where binary id='" + id + "' and password='" + password + "' and identity='" + identity + "'"
       this.query(sql).then(result => {
         resolve(result)
       }).catch(err => {
@@ -16,19 +16,19 @@ module.exports = class accounts_mod extends require('./model'){
   }
 
   // 获取账号列表(根据页号、页码和搜索关键字)
-  static getAccounts(query){
+  static getAccounts(query) {
     return new Promise((resolve, reject) => {
       let sql
       if (query) {
         sql = "select user.id,account.name,task.task1,task.task2,task.task3,task.task4,task.task5,task.task6," +
-        "task.task1sco,task.task2sco,task.task3sco,task.task4sco,task.task5sco,task.task6sco " +
-        "from user,task,account " +
-        "where user.id = task.id and account.id=task.id and user.id like '%"+query+"%'"
+          "task.task1sco,task.task2sco,task.task3sco,task.task4sco,task.task5sco,task.task6sco " +
+          "from user,task,account " +
+          "where user.id = task.id and account.id=task.id and user.id like '%" + query + "%'"
       } else {
         sql = "select user.id,account.name,task.task1,task.task2,task.task3,task.task4,task.task5,task.task6," +
-            "task.task1sco,task.task2sco,task.task3sco,task.task4sco,task.task5sco,task.task6sco " +
-            "from user,task,account " +
-            "where user.id = task.id and account.id=task.id "
+          "task.task1sco,task.task2sco,task.task3sco,task.task4sco,task.task5sco,task.task6sco " +
+          "from user,task,account " +
+          "where user.id = task.id and account.id=task.id "
       }
       this.query(sql).then(result => {
         resolve(result)
@@ -39,22 +39,21 @@ module.exports = class accounts_mod extends require('./model'){
   }
 
   // 添加一个账号
-  static createAccount(id,name,cla){
+  static createAccount(id, name, cla) {
     return new Promise((resolve, reject) => {
       let sql = "insert into" +
-          " user(id,password,identity) " +
-          "values('" + id + "',123456,1)"
+        " user(id,password,identity) " +
+        "values('" + id + "',123456,1)"
       this.query(sql).then(result => {
-        resolve(result)
-        let sql= "insert into " +
-        "account(id,name,class,tel,email,gender)" +
-        "values('"+id+"','"+name+"','"+cla+"','','','')"
+        let sql = "insert into " +
+          "account(id,name,class,tel,email,gender)" +
+          "values('" + id + "','" + name + "','" + cla + "','','','')"
         this.query(sql)
-        let sql1= "insert into " +
-        "task(id,task1,task2,task3,task4,task5,task6)" +
-        "values('"+id+"',0,0,0,0,0,0)"
+        let sql1 = "insert into " +
+          "task(id,task1,task2,task3,task4,task5,task6)" +
+          "values('" + id + "',0,0,0,0,0,0)"
         this.query(sql1)
-        resolve()
+        resolve(result)
       }).catch(err => {
         reject(err)
       })
@@ -62,10 +61,10 @@ module.exports = class accounts_mod extends require('./model'){
   }
 
   // 获取一个账号信息
-  static getAccountById(id){
+  static getAccountById(id) {
     return new Promise((resolve, reject) => {
       let sql = "select * " +
-          "from user where id='" + id + "'"
+        "from user where id='" + id + "'"
       this.query(sql).then(result => {
         resolve(result)
       }).catch(err => {
@@ -74,10 +73,10 @@ module.exports = class accounts_mod extends require('./model'){
     })
   }
 
-  static getStaticAll(){
+  static getStaticAll() {
     return new Promise((resolve, reject) => {
       let sql = "select * " +
-          "from user where id='" + id + "'"
+        "from user where id='" + id + "'"
       this.query(sql).then(result => {
         resolve(result)
       }).catch(err => {
@@ -86,15 +85,44 @@ module.exports = class accounts_mod extends require('./model'){
     })
   }
 
-  static setScoreById(id,index,score){
+  static setScoreById(id, index, score) {
     return new Promise((resolve, reject) => {
-      let sql = "update task "+
-      "set task"+index+"sco = '"+score+"' "+
-      "where id ='"+id+"'"
+      let sql = "update task " +
+        "set task" + index + "sco = '" + score + "' " +
+        "where id ='" + id + "'"
       this.query(sql).then(result => {
         resolve(result)
       }).catch(err => {
         reject(err)
+      })
+    })
+  }
+  static delAccountById(id) {
+    return new Promise((resolve, reject) => {
+      let sql = "delete from task " +
+        "where id ='" + id + "'"
+      this.query(sql).then(result => {
+        resolve(result)
+        let sql1 = "delete from account " +
+          "where id ='" + id + "'"
+        this.query(sql1).then(() => {
+          let sql2 = "delete from user " +
+          "where id = '" + id + "'"
+          this.query(sql2).then(()=>{
+            resolve(result)
+          })
+        })
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+  static initAccountById(id) {
+    return new Promise((resolve, reject) => {
+      let sql = "update user "+
+      "set init = 1 where id ='"+id+"'"
+      this.query(sql).then(result => {
+        resolve(result)
       })
     })
   }

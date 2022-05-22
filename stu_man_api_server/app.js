@@ -2,13 +2,10 @@ const express = require('express')
 const cors = require('cors')
 const accountsRouter = require('./routes/accounts')
 const profileRouter = require('./routes/profile')
-
-
 const app = express()
 
 // 解决跨域问题
 app.use(cors())
-
 // 分别解析表单请求体: application/json 和 application/x-www-form-urlencoded
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
