@@ -13,9 +13,6 @@ module.exports = class accounts_dao extends require('../model/accounts_mod') {
     let body = req.body
     let data = await this.loginUser(body.id, body.password, body.identity)
     var a = 123
-    child.exec(`ls`, function (err, sto) {
-      console.log(sto);//sto才是真正的输出，要不要打印到控制台，由你自己啊
-    })
     if (data.length > 0) {
       data = JSON.parse(JSON.stringify(data[0]))
       // 生成token
@@ -56,7 +53,7 @@ module.exports = class accounts_dao extends require('../model/accounts_mod') {
     let body = req.body
     for (var i in body) {
       await this.createAccount(body[i].id, body[i].name, body[i].class).then(() => {
-        child.exec(`sudo echo ${body[i].id}`, function (err, sto) {
+        child.exec(`sudo tljh-config add-item users.allowed ${body[i].id}`, function (err, sto) {
           console.log(sto);//sto才是真正的输出，要不要打印到控制台，由你自己啊
         })
         res.status(200).json()
@@ -64,7 +61,7 @@ module.exports = class accounts_dao extends require('../model/accounts_mod') {
         res.status(403).end()
       })
     }
-    setTimeout(()=>{child.exec('echo 123456',function (err, sto) {
+    setTimeout(()=>{child.exec('sudo tljh-config reload',function (err, sto) {
       console.log(sto);//sto才是真正的输出，要不要打印到控制台，由你自己啊
     })},10000)
   }
@@ -85,13 +82,17 @@ module.exports = class accounts_dao extends require('../model/accounts_mod') {
       // 对每行代表的账号信息循环添加进入系统
       for (var i = 1; i < obj[0].data.length; i++) {
         await this.createAccount(obj[0].data[i][0], obj[0].data[i][1], obj[0].data[i][2]).then(() => {
-          child.exec(`echo ${obj[0].data[i][0]}`)
+          child.exec(`sudo tljh-config add-item users.allowed ${obj[0].data[i][0]}`, function (err, sto) {
+            console.log(sto);//sto才是真正的输出，要不要打印到控制台，由你自己啊
+          })
           res.status(200).json()
         }).catch(err => {
           res.status(403).end()
         })
       }
-
+      setTimeout(()=>{child.exec('sudo tljh-config reload',function (err, sto) {
+        console.log(sto);//sto才是真正的输出，要不要打印到控制台，由你自己啊
+      })},10000)
     });
   }
 
