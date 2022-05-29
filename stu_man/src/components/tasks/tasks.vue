@@ -34,7 +34,7 @@ export default {
         this.$set(this.tasksStatus,index,1)
         this.updateTaskStatus()
       }
-      window.open(`http://52.24.79.132/user/${this.id}/notebooks/task${index+1}.ipynb`,"_blank");
+      window.open(`http://52.24.79.132/user/${this.id}/notebooks/experiment_material/tasks/task${index+1}.ipynb`,"_blank");
     },
     async getTaskStatus(){
        try {
